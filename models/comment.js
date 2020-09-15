@@ -2,26 +2,41 @@ const Joi = require('joi');
 const mongoose = require('mongoose');
 Joi.objectId = require('joi-objectid')(Joi);
 
+const COMMENT_MAX = 256;
+const COMMENT_MIN = 1;
+
 const commentSchema = new mongoose.Schema({
+  thread: { type: String, required: true },
   parent: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Comment',
     default: null
   },
   children: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
-  text: {type: String, required: true}
-});
+  text: {
+    type: String, 
+    required: true,
+    minLength: COMMENT_MIN,
+    maxlength: COMMENT_MAX
+  }
+},
+{ timestamps: true });
+
+commentSchema.statics.getThread = function(thread) {
+  return this
+    .find()
+    .where('thread').eq(thread)
+    .where('parent').eq(null)
+    .populate('children');
+}
 
 const Comment = mongoose.model("Comment", commentSchema);
 
 // Validates a /POST request
 function validatePostComment(comment) {
   const schema = {
-    parent: Joi.objectId().optional(),
-    children: Joi.array().items(
-      Joi.objectId()
-    ).optional(),
-    text: Joi.string().required()
+    parent: Joi.alternatives(Joi.objectId().optional(), Joi.empty()).optional(),
+    text: Joi.string().min(COMMENT_MIN).max(COMMENT_MAX).required()
   };
 
   return Joi.validate(comment, schema);
@@ -30,11 +45,7 @@ function validatePostComment(comment) {
 // Validates a /PUT request
 function validatePutComment(comment) {
   const schema = {
-    parent: Joi.objectId().optional(),
-    children: Joi.array().items(
-      Joi.objectId()
-    ).optional(),
-    text: Joi.string().optional()
+    text: Joi.string().min(COMMENT_MIN).max(COMMENT_MAX).required()
   };
 
   return Joi.validate(comment, schema);
