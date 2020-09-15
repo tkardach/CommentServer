@@ -45,7 +45,7 @@ async function generateComments() {
 
 describe('/api/comments', () => {
   beforeEach(async () => {
-    server = require('../../server');
+    server = require('../../../server');
 
     await generateComments();
   });
