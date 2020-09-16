@@ -1,0 +1,11 @@
+<div>
+  <textarea 
+    class="form-control" 
+    [(ngModel)]="commentText"
+    [placeholder]="placeholder" 
+    [attr.maxlength]="maxCharacters">
+  </textarea>
+  <button mat-fab class="post">
+    <mat-icon>send</mat-icon>
+  </button>
+</div>

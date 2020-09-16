@@ -93,7 +93,7 @@ router.put('/:id', validateObjectId, async (req, res) => {
   if (!comment)
     return res.status(404).send(errorResponse('Could not find comment with specified Id'));
 
-  logInfo(`Comment ${comment._id} updated.`);
+  logInfo(`Comment ${comment._id} updated.`)
 
   return res.status(200).send(comment);
 });
