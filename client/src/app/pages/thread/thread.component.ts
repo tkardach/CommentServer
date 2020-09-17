@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { IComment, CommentsService, INewComment } from 'src/app/comments/comments.service';
 import { ActivatedRoute } from '@angular/router';
 import { CommentComponent } from 'src/app/comments/comment/comment.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationDialog } from 'src/app/modals/dialogs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-thread',
@@ -16,7 +19,8 @@ export class ThreadComponent implements OnInit {
 
   constructor(
     private _commentsService: CommentsService,
-    private _activatedRoute: ActivatedRoute) {
+    private _activatedRoute: ActivatedRoute,
+    public dialog: MatDialog) {
       this._activatedRoute.paramMap.subscribe(async params => {
         this._threadName = params.get("threadName");
         if (this._threadName)
@@ -50,11 +54,34 @@ export class ThreadComponent implements OnInit {
     this._commentsService.postCommentToThread(this._threadName, newComment)
       .subscribe(
         result => {
-          console.log(result);
-          window.location.reload();
+          const dialogRef = this.dialog.open(ConfirmationDialog, {
+            width: '40%',
+            data: {
+              title: 'Comment Posted!',
+              content: 'Your comment was successfully posted.'
+            }
+          });
+
+          dialogRef.afterOpened().subscribe(_ => {
+            setTimeout(() => {
+               dialogRef.close();
+            }, 3000)
+          })
+
+          dialogRef.afterClosed().subscribe(() => {
+            window.location.reload();
+          });
         },
         error => {
-          console.log(error)
+          if (error instanceof HttpErrorResponse) {
+            const dialogRef = this.dialog.open(ConfirmationDialog, {
+              width: '40%',
+              data: {
+                title: `Error posting! Status ${error.status}`,
+                content: error.message
+              }
+            });
+          }
         }
       );
   }

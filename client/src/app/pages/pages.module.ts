@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ThreadComponent } from './thread/thread.component';
 import { CommentsModule } from '../comments/comments.module';
 import { CommentsService } from '../comments/comments.service';
+import { ModalsModule } from '../modals/modals.module';
 
 
 
@@ -16,7 +17,8 @@ import { CommentsService } from '../comments/comments.service';
     CommonModule,
     MaterialsModule,
     FormsModule,
-    CommentsModule
+    CommentsModule,
+    ModalsModule
   ],
   exports: [
     ThreadComponent
