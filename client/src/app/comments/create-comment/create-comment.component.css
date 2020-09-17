@@ -1,8 +1,14 @@
-button {
-  margin: 10px;
-  float: right;
-}
-
 .post {
   background-color: rgb(38, 173, 38);
 }
+
+.comment-text {
+  min-height: 50px;
+  max-height: 150px;
+}
+
+.comment {
+  margin: 5px;
+  background-color: rgb(243, 243, 243);
+}
+

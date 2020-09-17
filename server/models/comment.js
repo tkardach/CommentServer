@@ -22,12 +22,19 @@ const commentSchema = new mongoose.Schema({
 },
 { timestamps: true });
 
+var autoPopulateChildren = function(next) {
+  this.populate('children');
+  next();
+}
+
+commentSchema
+  .pre('find', autoPopulateChildren)
+
 commentSchema.statics.getThread = function(thread) {
   return this
     .find()
     .where('thread').eq(thread)
-    .where('parent').eq(null)
-    .populate('children');
+    .where('parent').eq(null);
 }
 
 const Comment = mongoose.model("Comment", commentSchema);

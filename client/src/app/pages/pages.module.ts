@@ -4,6 +4,7 @@ import { MaterialsModule } from '../materials/materials.module';
 import { FormsModule } from '@angular/forms';
 import { ThreadComponent } from './thread/thread.component';
 import { CommentsModule } from '../comments/comments.module';
+import { CommentsService } from '../comments/comments.service';
 
 
 

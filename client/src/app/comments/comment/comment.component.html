@@ -1,0 +1,36 @@
+<div class="parent">
+  <p>
+    {{text}}
+  </p>
+  <mat-card-actions>
+    <button mat-button *ngIf="!showReplies && replies?.length !== 0" (click)="showRepliesClicked(true)">
+      <mat-icon>keyboard_arrow_down</mat-icon>
+      View {{replies?.length}} replies
+    </button>
+    <button mat-button *ngIf="showReplies && replies?.length !== 0" (click)="showRepliesClicked(false)">
+      <mat-icon>keyboard_arrow_up</mat-icon>
+      Hide replies 
+    </button>
+    <button mat-button (click)="replyClicked()" *ngIf="!replying">Reply</button>
+    <button mat-button (click)="replying=false" *ngIf="replying">Cancel</button>
+  </mat-card-actions>
+</div>
+<div class="reply" *ngIf="replying">
+    <app-create-comment
+      [placeholder]="placeholder"
+      [maxCharacters]="maxCharacters"
+      [parent]="id"
+      (post)="onReplyPosted($event)">
+    </app-create-comment>
+</div>
+<div class="child-comment" *ngIf="showReplies" >
+  <div *ngFor="let comment of replies">
+    <app-comment
+      [parent]="comment.parent"
+      [id]="comment._id"
+      [text]="comment.text"
+      [replies]="comment.children"
+      [createdAt]="comment.createdAt">
+    </app-comment>
+  </div>
+</div>

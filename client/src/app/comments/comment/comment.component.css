@@ -1,0 +1,22 @@
+.parent {
+  margin: 5px;
+}
+
+.comment {
+  background-color: rgb(243, 243, 243);
+}
+
+.child-comment {
+  border-left: thin solid gray;
+  margin-left: 40px;
+}
+
+.reply {
+  width: 250px;
+  margin: 40px;
+}
+
+p {
+  word-break: break-all;
+  width: 80%;
+}

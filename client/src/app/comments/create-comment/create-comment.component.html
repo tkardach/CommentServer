@@ -1,11 +1,13 @@
 <div>
-  <textarea 
-    class="form-control" 
-    [(ngModel)]="commentText"
-    [placeholder]="placeholder" 
-    [attr.maxlength]="maxCharacters">
-  </textarea>
-  <button mat-fab class="post">
-    <mat-icon>send</mat-icon>
-  </button>
+  <mat-card-content>
+    <textarea 
+      class="form-control comment-text" 
+      [(ngModel)]="text"
+      [placeholder]="placeholder" 
+      [attr.maxLength]="maxCharacters">
+    </textarea>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button (click)="send()">Send</button>
+  </mat-card-actions>
 </div>
